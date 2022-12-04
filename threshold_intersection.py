@@ -4,10 +4,10 @@ import numpy as np
 #Abdullah Erzin
 
 #this is a helper function to cv2.threshold which is finding the value in between up and low limit
+# I assigng the pixel value to 255 under the lowerLimit(every value under the lowerLimit is going to be an white)
+# and i am making the opposite of it that means i assigng 255 every pixel value bigger than upperLimit 
+# (every value bigger the upperLimit is going to be an white)
 def thresholdIntersection(image, grayImage, lowerLimit, upperLimit):
-    # I assigng the pixel value to 255 under the lowerLimit(every value under the lowerLimit is going to be an white)
-    # and i am making the opposite of it that means i assigng 255 every pixel value bigger than upperLimit 
-    # (every value bigger the upperLimit is going to be an white)
     _,  thresholdLower = cv2.threshold(grayImage, lowerLimit, 255, cv2.THRESH_BINARY_INV)
     _, thresholdUpper = cv2.threshold( grayImage, upperLimit, 255, cv2.THRESH_BINARY)
 
