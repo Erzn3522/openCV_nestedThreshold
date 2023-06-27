@@ -8,14 +8,11 @@ import numpy as np
 # and i am making the opposite of it that means i assigng 255 every pixel value bigger than upperLimit 
 # (every value bigger the upperLimit is going to be an white)
 def thresholdIntersection(image, grayImage, lowerLimit, upperLimit):
-    _,  thresholdLower = cv2.threshold(grayImage, lowerLimit, 255, cv2.THRESH_BINARY_INV)
-    _, thresholdUpper = cv2.threshold( grayImage, upperLimit, 255, cv2.THRESH_BINARY)
+    thresholdLower = cv2.threshold(grayImage, lowerLimit, 255, cv2.THRESH_BINARY_INV)[1]
+    thresholdUpper = cv2.threshold(grayImage, upperLimit, 255, cv2.THRESH_BINARY)[1]
 
+    nestedImage = cv2.add(thresholdLower, thresholdUpper)
+    thresholdNested = cv2.threshold(nestedImage, 0, 255, cv2.THRESH_BINARY_INV)[1]
+    nestedContours, _ = cv2.findContours(thresholdNested, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-    # And by summing these threshold values, I change every pixel value to 255, except for 
-    # the lower and upper limit range, so that the intermediate region remains.    
-    nestedImage = np.add(thresholdLower, thresholdUpper)    
-    _,threshold_Nested = cv2.threshold(nestedImage, 0, 255, cv2.THRESH_BINARY_INV)
-    nestedContours, _ = cv2.findContours(threshold_Nested, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    cv2.drawContours(image, nestedContours, -1, (0, 0, 255), 2)
-    return image
+    return image, nestedContours
